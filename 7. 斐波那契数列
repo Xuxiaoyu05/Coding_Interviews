@@ -1,0 +1,28 @@
+# ——————题目描述——————：
+# 大家都知道斐波那契数列，现在要求输入一个整数n，请你输出斐波那契数列的第n项（从0开始，第0项为0），n <= 39 。
+
+# ——————解题思路——————：
+#（1）递归求解，F(n) = F(n-1) + F(n-2)，但是递归复杂度太大，一般不采用
+#（2）循环求解。
+# 注意：斐波那契数列的第 零 项
+
+# -*- coding:utf-8 -*-
+class Solution:
+    def Fibonacci(self, n):
+        # write code here
+        first = 0
+        second = 1
+        
+        if n == 0:
+            return first
+        
+        if n == 1:
+            return second
+        
+        while n >= 2:
+            temp = second
+            second = first + second
+            first = temp
+            n -= 1
+        
+        return second
