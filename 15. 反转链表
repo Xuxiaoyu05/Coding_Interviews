@@ -1,0 +1,24 @@
+# ——————题目描述——————：
+# 输入一个链表，反转链表后，输出新链表的表头。
+
+# ——————解题思路——————：
+# 需要一个中间结点过渡一下。依次将链中的结点拆下来，放在之前拆下来的链中结点的前面。
+
+# -*- coding:utf-8 -*-
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+class Solution:
+    # 返回ListNode
+    def ReverseList(self, pHead):
+        # write code here
+        dummy = ListNode(0)
+        
+        while pHead:
+            temp = pHead   # 拆链
+            pHead = pHead.next
+            temp.next = dummy.next
+            dummy.next = temp
+        
+        return dummy.next
