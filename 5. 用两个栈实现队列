@@ -1,0 +1,24 @@
+# ——————题目描述——————：
+# 用两个栈来实现一个队列，完成队列的Push和Pop操作。 队列中的元素为int类型。
+
+# ——————解题思路——————：
+# 队列是先进先出，栈是先进后出的数据结构。因此，将入栈到栈 1 中的元素全部压入栈 2 中，再从栈 2 出栈，就是先进先出的顺序。
+# 当 push 一个元素时，将其 append 到 stack1 中。（入栈）
+# 当 pop 一个元素时，若 stack2 为空，将 stack1 中的元素全部 pop 到 stack2 中去，再从 stack2 中 pop 元素。若 stack2 不为空，则直接从 stack2 中 pop 元素。
+
+# -*- coding:utf-8 -*-
+class Solution:
+    def __init__(self):
+        self.stack1 = []
+        self.stack2 = []
+        
+    def push(self, node):
+        # write code here
+        self.stack1.append(node)   
+        
+    def pop(self):
+        # return xx
+        if len(self.stack2) == 0:
+            while self.stack1:
+                self.stack2.append(self.stack1.pop())
+        return self.stack2.pop()
