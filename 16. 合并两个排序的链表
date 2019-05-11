@@ -1,0 +1,40 @@
+# ——————题目描述——————：
+# 输入两个单调递增的链表，输出两个链表合成后的链表，当然我们需要合成后的链表满足单调不减规则。
+
+# ——————解题思路——————：
+# 生成一个新的结点，将两个链表的结点依次链再后面。使用两个指针，始终把较小的那个链到新链表中。直到一方到链表末尾为止。将未到达末尾的那个链表链接上来即可。
+
+
+# -*- coding:utf-8 -*-
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+class Solution:
+    # 返回合并后列表
+    def Merge(self, pHead1, pHead2):
+        # write code here
+        if not pHead1:
+            return pHead2
+        if not pHead2:
+            return pHead1
+        
+        MergedList = ListNode(0)
+        cur = MergedList
+        while pHead1 and pHead2:
+            if pHead1.val < pHead2.val:
+                cur.next = pHead1
+                pHead1 = pHead1.next
+            else:
+                cur.next = pHead2
+                pHead2 = pHead2.next
+            
+            cur = cur.next
+        
+        if pHead1:   # 注意：此处用 if 而不是 while
+            cur.next = pHead1
+            
+        if pHead2:
+            cur.next = pHead2
+        
+        return MergedList.next
