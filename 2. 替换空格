@@ -1,0 +1,33 @@
+# ——————题目描述——————：
+# 请实现一个函数，将一个字符串中的每个空格替换成“%20”。例如，当字符串为We Are Happy.则经过替换之后的字符串为We%20Are%20Happy。
+
+# ——————解题思路——————：
+# 逆向思维：类似这种移动问题，可以先给出最终需要的长度，然后从后向前扫描，同时给定两个指针（一个指向旧数组，一个指向新数组）来保证定位。
+#         （如果每次遇到空格添加“%20”，那么空格后面的数字需要频繁向后移动，所以这种方法不可取。）
+
+# -*- coding:utf-8 -*-
+class Solution:
+    # s 源字符串
+    def replaceSpace(self, s):
+        # write code here
+        # 简单解法，直接用 replace，运行时间：43ms
+        # return s.replace(" ", "%20") 
+        
+        # 逆向思维求解, 运行时间：28ms
+        space_num = s.count(" ")             # 统计 s 中 空格 的数量
+        
+        Olength = len(s) - 1                # 原始长度 - 1
+        Tlength = Olength + space_num * 2   # 最终结果的总长度 - 1
+        new_S = [None] * (Tlength + 1)
+        
+        while Olength >= 0 and Tlength >= Olength:  # 注意此处的判断条件
+            if s[Olength] == " ":
+                new_S[Tlength-2:Tlength+1] = "%20"
+                Tlength -= 3
+                Olength -= 1
+            else:
+                new_S[Tlength] = s[Olength]
+                Tlength -= 1
+                Olength -= 1
+        
+        return "".join(new_S)
