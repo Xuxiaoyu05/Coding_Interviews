@@ -1,0 +1,32 @@
+# ——————题目描述——————：
+# 我们可以用2*1的小矩形横着或者竖着去覆盖更大的矩形。请问用n个2*1的小矩形无重叠地覆盖一个2*n的大矩形，总共有多少种方法？
+
+# ——————解题思路——————：
+# 斐波那契数列的应用：
+# 画图可得，2 * 1 的小矩形横着或竖着放置，是两种互斥的情况。
+# 要覆盖一个 2 * n 的大矩形，若第一个竖着放置，F(n) = F(n-1)；若前两个横着放置，F(n) = F(n-2)。
+# 所以，F(n) = F(n-1) + F(n-2)
+
+# -*- coding:utf-8 -*-
+class Solution:
+    def rectCover(self, number):
+        # write code here
+        if number == 0:
+            return 0
+        
+        first = 1
+        second = 2
+        
+        if number == 1:
+            return first
+        
+        if number == 2:
+            return second
+        
+        while number >= 3:
+            temp = second
+            second = first + second
+            first = temp 
+            number -= 1
+        
+        return second
