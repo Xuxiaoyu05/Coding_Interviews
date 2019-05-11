@@ -1,0 +1,32 @@
+# ——————题目描述——————：
+# 给定一个double类型的浮点数base和int类型的整数exponent。求base的exponent次方。
+
+# ——————解题思路——————：
+# 使用递归的方法：当n为偶数, a^n = a^(n/2) * a^(n/2)；当n为奇数, a^n = a^((n-1)/2) * a^((n-1)/2)) * a。若指数为负数，则先将底数取倒数，指数变正。
+# 注意特殊输入：（1）底数为 0 且指数为负的无效输入；（2）指数为负。
+# 优化代码速度：可以用右移一位运算代替除以 2；利用位与运算代替求余运算 % 来判断一个数是奇数还是偶数。
+
+# -*- coding:utf-8 -*-
+class Solution:
+    def Power(self, base, exponent):
+        # write code here
+        # 简单解法
+        # return base ** exponent 
+        
+        # 正常递归解法
+        # 当底数为0，指数为负数时，为无效输入
+        if base == 0 and exponent < 0:
+            raise ValueError("Please enter valid numbers!")
+        elif exponent == 0:
+            return 1
+        elif exponent == 1:
+            return base
+        elif exponent < 0:
+            base = 1/base
+            exponent = -exponent
+        
+        if exponent & 0x1 == 1:  # exponent 为奇数
+            # 位运算只能用于整型，base 为 float 型，不能用左移运算符。
+            return self.Power(base ** 2, exponent >> 1) * base
+        else: # exponent 为偶数
+            return self.Power(base ** 2, exponent >> 1)
