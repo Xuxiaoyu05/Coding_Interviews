@@ -1,0 +1,38 @@
+# ——————题目描述——————：
+# 给一个链表，若其中包含环，请找出该链表的环的入口结点，否则，输出null。
+
+
+# ——————解题思路——————：
+# 快慢指针法：
+#（1）判断是否有环：设置快慢指针，快指针每次走两步，慢指针每次走一步，若快慢指针相遇，则说明该链表包含环，记录相遇结点，停止快慢指针；
+#（2）找出环的入口：让快指针回到链表头，慢指针依然位于相遇点，同时开始，每次都走1步，相遇时，相遇点即为环的入口。
+# 推导如下：
+# 设从链表头到环的入口距离为 a, 从环的入口到相遇点距离为 b，环的长度为 l。
+# 则当快慢指针相遇时，fast 走过的路程 sf = a + nl + b，slow 走过的路程为 sl = a + b，且 fast = 2 * slow，所以 b = nl - a = (n-1) * l + (l - a)，
+# 而 l - a 为相遇点到环入口剩下的长度，所以相遇点的指针和从头部走的指针总会在环的入口相遇，或走0圈，或1圈……
+
+
+
+# -*- coding:utf-8 -*-
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+class Solution:
+    def EntryNodeOfLoop(self, pHead):
+        # write code here
+        fast, slow = pHead, pHead
+        
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+            # 当 fast 和 slow 相遇时
+            if fast == slow:
+                # 让 fast 从头开始
+                fast = pHead
+                while fast:
+                    if fast == slow:
+                        return fast
+                    fast = fast.next
+                    slow = slow.next
+        return None
