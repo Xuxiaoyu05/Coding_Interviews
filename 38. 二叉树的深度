@@ -1,0 +1,44 @@
+# ——————题目描述——————：
+# 输入一棵二叉树，求该树的深度。从根结点到叶结点依次经过的结点（含根、叶结点）形成树的一条路径，最长路径的长度为树的深度。
+
+
+# ——————解题思路——————：
+#（1）递归求解：从根节点出发，求其左右子树的深度，取左右子树的深度较大者 + 1 = 当前树的深度。“触底条件”是若是叶子结点，深度为0。
+#（2）非递归求解：层次遍历的思想，树的深度即为层数。
+
+
+# -*- coding:utf-8 -*-
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+class Solution:
+    # 递归解法
+    def TreeDepth_Recursive(self, pRoot):
+        # write code here
+        if not pRoot:
+            return 0
+         
+        return max(self.TreeDepth(pRoot.left), self.TreeDepth(pRoot.right)) + 1
+    
+    # 非递归解法
+    def TreeDepth_NonRecursive(self, pRoot):
+        # write code here
+        if not pRoot:
+            return 0
+        
+        depth = 0
+        queue = [pRoot]
+        
+        while queue:
+            childs = []
+            for node in queue:
+                if node.left:
+                    childs.append(node.left)
+                if node.right:
+                    childs.append(node.right)
+            depth += 1
+            queue = childs
+        
+        return depth
