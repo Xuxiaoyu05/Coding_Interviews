@@ -1,0 +1,50 @@
+# ——————题目描述——————：
+# 在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。
+# 输入一个数组,求出这个数组中的逆序对的总数P。并将P对1000000007取模的结果输出。 即输出P%1000000007
+# 输入描述: 题目保证输入的数组中没有的相同的数字
+
+
+# ——————解题思路——————：
+# 利用归并排序求逆序对。
+
+
+# -*- coding:utf-8 -*-
+class Solution:
+    def InversePairs(self, data):
+        # write code here
+        # 用归并排序求逆序对
+        return self.MergeSort(data) % 1000000007
+    
+    
+    def MergeSort(self, array):
+        count = 0
+        if len(array) > 1:
+            mid = len(array) // 2
+            left = array[:mid]
+            right = array[mid:]
+            count += self.MergeSort(left)
+            count += self.MergeSort(right)
+            
+            i, j, k =0, 0, 0
+            
+            while i < len(left) and j < len(right):
+                if left[i] <= right[j]:
+                    array[k] = left[i]
+                    i += 1
+                else:
+                    array[k] = right[j]
+                    j += 1
+                    count += len(left) - i
+                k += 1
+            
+            while i < len(left):
+                array[k] = left[i]
+                i += 1
+                k += 1
+            
+            while j < len(right):
+                array[k] = right[j]
+                j += 1
+                k += 1
+            
+        return count
