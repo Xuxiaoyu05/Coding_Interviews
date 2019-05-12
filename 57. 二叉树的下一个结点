@@ -1,0 +1,45 @@
+# ——————题目描述——————：
+# 给定一个二叉树和其中的一个结点，请找出中序遍历顺序的下一个结点并且返回。注意，树中的结点不仅包含左右子结点，同时包含指向父结点的指针。
+
+# ——————解题思路——————：
+# 寻找二叉树的后继结点（中序遍历），分为两种情况：
+#（1）该结点的右子树不为空：则其后继为右子树中的最左边结点；
+#（2）该结点的右子树为空，则其后继为：
+#     1. 该结点是其父结点的左子结点，那么它的下一个结点为父结点；
+#     2. 该结点是其父结点的右子结点，则可沿着父结点的路径一直往上找，若找到某一结点为其父结点的左子结点，则该结点的父结点为原结点的下一个结点；
+#     若找到根结点（没有父结点的结点）都没有满足条件的，则说明原结点为最右的结点，其下一个结点为None。
+
+
+# -*- coding:utf-8 -*-
+# class TreeLinkNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+#         self.next = None
+class Solution:
+    def GetNext(self, pNode):
+        # write code here
+        # 求二叉树某一结点的后继(中序遍历)，分为三种情况：
+        
+        #（1）该结点为空
+        if not pNode:
+            return
+        
+        #（2）该结点有右子树，后继为右子树中的最小值
+        if pNode.right:
+            return self.Find_Minimum(pNode.right)
+        
+        #（3）该结点无右子树，后继要向上搜索
+        y = pNode.next  # pNode 的父结点
+        
+        while y != None and pNode == y.right:
+            pNode = y
+            y = pNode.next
+        
+        return y
+        
+    def Find_Minimum(self, root):
+        while root.left:
+            root = root.left
+        return root
