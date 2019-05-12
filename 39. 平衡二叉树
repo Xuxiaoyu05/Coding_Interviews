@@ -1,0 +1,26 @@
+# ——————题目描述——————：
+# 输入一棵二叉树，判断该二叉树是否是平衡二叉树。
+
+# ——————解题思路——————：
+# 递归，平衡二叉树是左右子树高度相差不超过 1 的二叉树。
+
+
+# -*- coding:utf-8 -*-
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+class Solution:
+    def IsBalanced_Solution(self, pRoot):
+        # write code here
+        # 平衡二叉树是左右子树高度相差不超过 1 的二叉树
+        if not pRoot:
+            return True
+        
+        return abs(self.Tree_Depth(pRoot.left) - self.Tree_Depth(pRoot.right)) <= 1 and self.IsBalanced_Solution(pRoot.left) and self.IsBalanced_Solution(pRoot.right)
+    
+    def Tree_Depth(self, root):
+        if not root:
+            return 0
+        return max(self.Tree_Depth(root.left), self.Tree_Depth(root.right)) + 1
