@@ -4,3 +4,38 @@
 # ——————解题思路——————：
 #（1）二叉搜索树的特性：左子树的值小于根结点的值，右子树的值大于根结点的值。（2）后序遍历：左子树 + 右子树 + 根。
 # 递归求解，序列的最后一个值一定为根结点，前面的序列被分为左子树和右子树，左子树的值都比根结点小，右子树的值都比根结点大，如此递归即可。
+# 注意：因为当 sequence = [] 时候，return False，所以递归的时候，注意左右子树都不能为空。若为空，返回 True。
+
+
+
+# -*- coding:utf-8 -*-
+class Solution:
+    def VerifySquenceOfBST(self, sequence):
+        # write code here
+        if not sequence:
+            return False
+        
+        if len(sequence) == 1:  # 当只有一个值的时候，返回 True。否则 index 将无值，会报错
+            return True
+        
+        root = sequence[-1]  # 根结点的值是后序遍历中最后一个元素
+        
+        for i in range(len(sequence)-1):
+            index = i
+            if sequence[i] > root:  # 寻找右子树开始的位置，已知各元素互不相同
+                break 
+        
+        # 若右子树中有小于 root 的元素，直接返回 False
+        for j in range(index+1, len(sequence)-1):
+            if sequence[j] < root:  
+                return False
+        
+        left = True
+        if index > 0:  # 递归中的左子树不为空
+            left = self.VerifySquenceOfBST(sequence[:index])
+        
+        right = True
+        if index < len(sequence)-1:  # 递归中的右子树不为空
+            right = self.VerifySquenceOfBST(sequence[index:-1])
+                                            
+        return left and right
