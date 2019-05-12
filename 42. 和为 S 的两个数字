@@ -1,0 +1,25 @@
+# ——————题目描述——————：
+# 输入一个递增排序的数组和一个数字S，在数组中查找两个数，使得他们的和正好是S，如果有多对数字的和等于S，输出两个数的乘积最小的。
+
+# ——————解题思路——————：
+# 双指针法：使用两个指针，分别指向数组的头和尾，判断他们之和是否等于S，等于直接返回，小于S则将第一个指针向后移动一位，大于S将后一个指针向前移动一位。
+# 注意：对于用索引找到的一对数字满足条件的，乘积最小的即为找到的第一对（不用刻意判断）。
+
+
+# -*- coding:utf-8 -*-
+class Solution:
+    def FindNumbersWithSum(self, array, tsum):
+        # write code here
+        
+        left = 0
+        right = len(array) - 1
+        
+        while left < right:
+            if array[left] + array[right] == tsum:
+                return [array[left], array[right]]
+            elif array[left] + array[right] < tsum:
+                left += 1
+            else:
+                right -= 1
+                
+        return []
