@@ -1,0 +1,72 @@
+# ——————题目描述——————：
+# 有一个m行和n列的方格。一个机器人从坐标0,0的格子开始移动，每次只能向左，右，上，下四个方向移动一格，但是不能进入行坐标和列坐标的数位之和大于k的格子。 
+# 例如，当k为18时，机器人能够进入方格（35,37），因为3+5+3+7 = 18。但是，它不能进入方格（35,38），因为3+5+3+8 = 19。
+# 请问该机器人能够达到多少个格子？
+
+
+# ——————解题思路——————：
+# 回溯法。
+# 额外生成一个布尔矩阵，用来存放该位置是否已经被遍历过。判断条件有三个：
+# （1）坐标是否超出边界；
+# （2）坐标之和是否大于给定阈值；
+# （3）位置是否被遍历过
+#  对于满足上述条件之一的位置，计数器返回0；
+#  否则， 计数器为 1+ 周围四个位置的返回值（周围的不合法位置返回为0，所以不会影响）。
+
+
+# -*- coding:utf-8 -*-
+class Solution:
+    def movingCount(self, threshold, rows, cols):
+        # write code here
+        # 回溯法
+        if rows == 0 or cols == 0 or threshold < 0:
+            return 0
+        
+        # 生成一个 布尔矩阵 来判断该位置是否被遍历过
+        V = [[False] * cols for i in range(rows)]  
+        
+        # 从坐标 0, 0 开始移动
+        return self.Search(threshold, rows, cols, 0, 0, V)
+
+    
+    def Search(self, threshold, rows, cols, row, col, V):
+        count = 0
+        
+        # 超出边界
+        if row >= rows or col >= cols:
+            return 0
+        
+        # 坐标之和是否大于给定阈值 或 该位置已经遍历过
+        if self.GetSum(row, col) > threshold or V[row][col] == True:
+            return 0
+        
+        V[row][col] = True
+        count += 1
+        
+        # 分别向四个方向继续搜索
+        if row < rows:
+            count += self.Search(threshold, rows, cols, row + 1, col, V)
+        
+        if col < cols:
+            count += self.Search(threshold, rows, cols, row, col + 1, V)
+        
+        if row > 0:
+            count += self.Search(threshold, rows, cols, row - 1, col, V)
+        
+        if col > 0:
+            count += self.Search(threshold, rows, cols, row, col - 1, V)
+            
+        return count
+    
+    def GetSum(self, row, col):
+        Sum = 0
+        
+        while row:
+            Sum += row % 10
+            row = row // 10
+        
+        while col:
+            Sum += col % 10
+            col = col // 10
+        
+        return Sum
