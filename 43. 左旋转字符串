@@ -1,0 +1,50 @@
+# ——————题目描述——————：
+# 汇编语言中有一种移位指令叫做循环左移（ROL），现在有个简单的任务，就是用字符串模拟这个指令的运算结果。
+# 对于一个给定的字符序列S，请你把其循环左移K位后的序列输出。
+# 例如，字符序列S=”abcXYZdef”,要求输出循环左移3位后的结果，即“XYZdefabc”。是不是很简单？OK，搞定它！
+
+
+# ——————解题思路——————：
+#（1）直接利用截取来调换字符的位置；
+#（2）先对字符串的两段分别翻转，得到”ZYXcbafed”，再将该字符串翻转即得。
+
+
+# -*- coding:utf-8 -*-
+class Solution:
+    # 直接截取
+    def LeftRotateString(self, s, n):
+        # write code here
+        if not s or n <= 0:
+            return s
+        
+        length = len(s)
+        # 计算需要移动的步数
+        moveCount = n % length
+        
+        return s[moveCount:] + s[:moveCount]
+        
+        
+# -*- coding:utf-8 -*-
+class Solution:
+    # 两段字符串分别翻转，再对得到的字符串进行翻转得到结果
+    def LeftRotateString(self, s, n):
+        # write code here
+        if not s or n <= 0:
+            return s
+        
+        length = len(s)
+        moveCount = n & length
+        
+        s = self.Reverse(s, 0, moveCount - 1)
+        s = self.Reverse(s, moveCount, length - 1)
+        s = self.Reverse(s, 0, length - 1)
+        
+        return s
+    
+    def Reverse(self, s, left, right):
+        s_list = list(s)
+        while left < right:
+            s_list[left], s_list[right] = s_list[right], s_list[left]
+            left += 1
+            right -= 1
+        return "".join(s_list)
