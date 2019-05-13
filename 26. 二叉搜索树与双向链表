@@ -1,0 +1,47 @@
+# ——————题目描述——————：
+# 输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的双向链表。要求不能创建任何新的结点，只能调整树中结点指针的指向。
+
+
+# ——————解题思路——————：
+# 中序遍历将搜索二叉树的结点从小到大排列起来，然后再遍历一遍修改左右节点的指向。
+
+
+# -*- coding:utf-8 -*-
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+class Solution:
+    def Convert(self, pRootOfTree):
+        # write code here
+        if not pRootOfTree:
+            return None
+        
+        res = self.InOrder_Tree(pRootOfTree)
+        
+        # 注意：指针改变，0 <= i <= len(res) - 2
+        for i in range(0, len(res)-1):
+            res[i+1].left = res[i]
+            res[i].right = res[i+1]
+            
+        return res[0]
+    
+    def InOrder_Tree(self, root):
+        if not root:
+            return []
+        
+        res = []
+        stack = []
+        cur = root
+        
+        while cur or stack:
+            if cur:
+                stack.append(cur)
+                cur = cur.left
+            else:
+                cur = stack.pop()
+                res.append(cur)
+                cur = cur.right
+        
+        return res
