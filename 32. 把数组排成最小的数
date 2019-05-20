@@ -1,0 +1,29 @@
+# ——————题目描述——————：
+# 输入一个正整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。
+# 例如输入数组{3，32，321}，则打印出这三个数字能排成的最小数字为321323。
+
+
+# ——————解题思路——————：
+# 对于数组中任意两个数字 m 和 n, 如果他们组成的新数字 mn > nm, 那说明 n 一定在 m 前面。
+# 这已经定义了一种排序规则，可以使用排序算法对原数组进行排序，最后的结果拼接起来即为最小的数字。此处使用冒泡排序法。
+
+# -*- coding:utf-8 -*-
+class Solution:
+    def PrintMinNumber(self, numbers):
+        # write code here
+        
+        # 冒泡排序
+        
+        numbers = [str(i) for i in numbers]  # 便于进行字符串拼接
+        
+        for i in range(len(numbers)-1, 0, -1):
+            flag = False
+            for j in range(i):
+                if numbers[j] + numbers[j+1] > numbers[j+1] + numbers[j]:
+                    numbers[j], numbers[j+1] = numbers[j+1], numbers[j]
+                    flag = True
+            
+            if not flag:
+                break
+                
+        return "".join(numbers)
