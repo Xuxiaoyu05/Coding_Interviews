@@ -1,0 +1,35 @@
+# ——————题目描述——————：
+# 请实现一个函数用来找出字符流中第一个只出现一次的字符。
+# 例如，当从字符流中只读出前两个字符"go"时，第一个只出现一次的字符是"g"。当从该字符流中读出前六个字符“google"时，第一个只出现一次的字符是"l"。
+
+# ——————输出描述——————：
+如果当前字符流没有存在出现一次的字符，返回#字符。
+
+
+# ——————解题思路——————：
+# 定义两个辅助空间，一个用于存储插入的字符，一个字典用于存储出现的字符以及字符出现的次数
+
+
+# -*- coding:utf-8 -*-
+class Solution:
+    # 返回对应char
+    def __init__(self):
+        # 定义两个辅助空间
+        # 一个用于存储插入的字符，一个字典用于存储出现的字符以及字符出现的次数
+        self.alist = []
+        self.data = {}
+        
+    def FirstAppearingOnce(self):
+        # write code here
+        for char in self.alist:
+            if self.data[char] == 1:
+                return char
+        
+        return "#"
+        
+    def Insert(self, char):
+        # write code here
+        if char not in self.data:
+            self.data[char] = 0
+        self.data[char] += 1
+        self.alist.append(char)
