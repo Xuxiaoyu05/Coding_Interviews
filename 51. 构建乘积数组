@@ -1,0 +1,28 @@
+# ——————题目描述——————：
+# 给定一个数组A[0,1,...,n-1],请构建一个数组B[0,1,...,n-1],其中B中的元素B[i]=A[0]*A[1]*...*A[i-1]*A[i+1]*...*A[n-1]。不能使用除法。
+
+
+# ——————解题思路——————：
+# 将原始的乘积分为两部分A[0]*A[1]*…*A[i-1]与A[i+1]*…*A[n-1]，分别计算这两部分的值存储起来，最后再将这两部分相乘。
+
+
+# -*- coding:utf-8 -*-
+class Solution:
+    def multiply(self, A):
+        # write code here
+        if not A:
+            return 0
+        
+        pre = [1] * len(A)
+        post = [1] * (len(A))
+        
+        # 分别构建前后乘积数组
+        for i in range(1, len(A)):
+            pre[i] = pre[i-1] * A[i-1]  # 从前往后计算
+            post[len(A)-i-1] = A[len(A)-i] * post[len(A)-i] # 从后往前计算
+        
+        B = []
+        for i in range(0, len(A)):
+            B.append(pre[i] * post[i])
+        
+        return B
