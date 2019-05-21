@@ -1,0 +1,121 @@
+# ——————题目描述——————：
+# 如何得到一个数据流中的中位数？如果从数据流中读出奇数个数值，那么中位数就是所有数值排序之后位于中间的数值。
+# 如果从数据流中读出偶数个数值，那么中位数就是所有数值排序之后中间两个数的平均值。
+# 我们使用Insert()方法读取数据流，使用GetMedian()方法获取当前读取数据的中位数。
+
+
+# ——————解题思路——————：
+# 使用 最大堆/最小堆 求解：使用最大堆/最小堆的插入时间复杂度为 O(logn)，得到中位数的时间复杂度为 O(1)。原理：
+# 保证最大堆和最小堆的数据平衡（其中数据的数目之差不大于1）。总数目为偶数时，插入最小堆，为奇数时，插入最大堆；
+# 保证最大堆中所有元素都小于最小堆中元素。如，总数目为偶数时，应插入最小堆，但该元素小于最大堆堆顶元素，所以反而将该元素插入最大堆，再将最大堆堆顶元素插入最小堆。总数目为奇数时类似；
+# 取中位数时，若总数目为偶数，则中位数为两个堆堆顶的平均数，为奇数时，中位数为最小堆堆顶元素。
+
+
+# -*- coding:utf-8 -*-
+class Solution:
+    def __init__(self):
+        # 用最大堆和最小堆来实现，保证最大堆中的元素都小于最小堆中的元素
+        self.MaxHeap = []
+        self.MinHeap = []
+    def Insert(self, num):
+        # write code here
+
+        len_Max = len(self.MaxHeap)
+        len_Min = len(self.MinHeap)
+        
+        # 和为偶数则插入到最小堆中
+        if (len_Max + len_Min) % 2 == 0:
+            # 注意加上 len_Max > 0 的判断条件
+            if len_Max > 0 and num < self.MaxHeap[0]:
+                self.InsertMaxHeap(num)
+                num = self.popMaxHeap()
+            self.InsertMinHeap(num)
+        else:  # 和为奇数则插入到最大堆中
+            if len_Min > 0 and num > self.MinHeap[0]:
+                self.InsertMinHeap(num)
+                num = self.popMinHeap()
+            self.InsertMaxHeap(num)
+            
+    def GetMedian(self, _):
+        # write code here
+        len_Max = len(self.MaxHeap)
+        len_Min = len(self.MinHeap)
+        
+        # 和为偶数，返回各自的最大/最小元素并除以2.0
+        if (len_Max + len_Min) % 2 == 0:
+            # 求中位数用 /2.0 的方式，而不是直接 //2（向下取整）
+            return (self.MaxHeap[0] + self.MinHeap[0])/2.0
+        
+        return self.MinHeap[0]
+    
+    def Parent(self, i):
+        return (i-1) // 2
+    
+    def InsertMaxHeap(self, num):
+        self.MaxHeap.append(num)
+        
+        i = len(self.MaxHeap) - 1
+        
+        # 新插入的值从队尾往上浮，直到满足条件
+        while i > 0 and self.MaxHeap[self.Parent(i)] < self.MaxHeap[i]:
+            self.MaxHeap[i], self.MaxHeap[self.Parent(i)] = self.MaxHeap[self.Parent(i)], self.MaxHeap[i]
+            i = self.Parent(i)
+
+    def InsertMinHeap(self, num):
+        self.MinHeap.append(num)
+        
+        i = len(self.MinHeap) - 1
+        
+        while i > 0 and self.MinHeap[self.Parent(i)] > self.MinHeap[i]:
+            self.MinHeap[i], self.MinHeap[self.Parent(i)] = self.MinHeap[self.Parent(i)], self.MinHeap[i]
+            i = self.Parent(i)
+        
+    def popMaxHeap(self):
+        max_val = self.MaxHeap[0]
+        self.MaxHeap[0] = self.MaxHeap[-1]
+        self.MaxHeap.pop()   # 将最后一个元素 pop 出去
+        
+        self.MaintainMaxHeap(0, len(self.MaxHeap)-1)
+        
+        return max_val
+
+    def popMinHeap(self):
+        min_val = self.MinHeap[0]
+        self.MinHeap[0] = self.MinHeap[-1]
+        self.MinHeap.pop()
+        
+        self.MaintainMinHeap(0, len(self.MinHeap)-1)
+        
+        return min_val
+    
+    def MaintainMaxHeap(self, root, heapsize):
+        left = 2 * root + 1
+        right = 2 * root + 2
+        
+        larger = root
+        if left <= heapsize and self.MaxHeap[left] > self.MaxHeap[larger]:
+            larger = left
+        
+        if right <= heapsize and self.MaxHeap[right] > self.MaxHeap[larger]:
+            larger = right
+        
+        if larger != root:
+            self.MaxHeap[larger], self.MaxHeap[root] = self.MaxHeap[root],self.MaxHeap[larger]
+            self.MaintainMaxHeap(larger, heapsize)
+    
+    
+    def MaintainMinHeap(self, root, heapsize):
+        left = 2 * root + 1
+        right = 2 * root + 2
+        
+        smaller = root
+        
+        if left <= heapsize and self.MinHeap[left] < self.MinHeap[smaller]:
+            smaller = left
+        
+        if right <= heapsize and self.MinHeap[right] < self.MinHeap[smaller]:
+            smaller = right
+        
+        if smaller != root:
+            self.MinHeap[root], self.MinHeap[smaller] = self.MinHeap[smaller], self.MinHeap[root]
+            self.MaintainMinHeap(smaller, heapsize)
