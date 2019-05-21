@@ -5,4 +5,24 @@
 
 # ——————解题思路——————：
 #（1）新建数组 odd, even，遍历数组将奇数和偶数分别存入这两个数组中，最后将两个数组合并，时间复杂度和空间复杂度都是 O(n)；
-#（2）若不允许使用额外的空间，
+#（2）若不允许使用额外的空间，采用冒泡排序的思想，如相邻两个元素前面为偶数，后为奇数，则交换。
+
+
+# -*- coding:utf-8 -*-
+class Solution:
+    def reOrderArray(self, array):
+        # write code here
+        # 方法1：分别设置两个数组用来存储奇数和偶数，遍历一次，时间复杂度和空间复杂度都为 O(n)
+        
+        # 改进：不用额外空间，冒泡排序，当相邻元素前一个为偶数，后一个为奇数时彼此交换
+        for i in range(0, len(array)):
+            flag = False
+            for j in range(len(array)-1, i, -1):
+                if array[j-1] % 2 == 0 and array[j] % 2 != 0:
+                    array[j], array[j-1] = array[j-1], array[j]
+                    flag = True
+                    
+            if not flag:
+                break
+                
+        return array
