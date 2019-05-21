@@ -1,0 +1,47 @@
+# ——————题目描述——————：
+# 定义栈的数据结构，请在该类型中实现一个能够得到栈中所含最小元素的min函数（时间复杂度应为O（1））。
+
+
+# ——————解题思路——————：
+# 使用一个辅助栈，用来存储当前栈中的最小值，辅助栈中元素数量和原始栈一样多。
+# 每次入栈时，将入栈元素与辅助栈顶元素相比较，如果该元素较小，则将该元素也入辅助栈，否则将辅助栈顶元素再入辅助栈一次。
+# 出栈时，辅助栈也要出栈。即保持辅助栈顶元素为当前栈的最小元素值。
+
+
+# -*- coding:utf-8 -*-
+class Solution:
+    def __init__(self):
+        self.stack = []
+        self.assist_stack = []
+    
+    def isEmpty(self):
+        return self.stack == []
+    
+    def push(self, node):
+        # write code here
+        self.stack.append(node)
+        if not self.assist_stack or node <= self.assist_stack[-1]:
+            self.assist_stack.append(node)
+        else:
+            self.assist_stack.append(self.min())
+            
+    def pop(self):
+        # write code here
+        if self.isEmpty():
+            return
+        
+        self.assist_stack.pop()
+        return self.stack.pop()
+        
+    def top(self):
+        # write code here
+        if self.isEmpty():
+            return
+        
+        return self.stack[-1]
+    
+    def min(self):
+        # write code here
+        if self.assist_stack == []:
+            return
+        return self.assist_stack[-1]
