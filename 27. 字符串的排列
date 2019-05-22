@@ -1,0 +1,30 @@
+# ——————题目描述——————：
+# 输入一个字符串,按字典序打印出该字符串中字符的所有排列。例如输入字符串abc,则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab和cba。
+
+
+# ——————输入描述——————:
+输入一个字符串,长度不超过9(可能有字符重复),字符只包括大小写字母。
+
+
+# ——————解题思路——————：
+# 函数内部递归：对原字符串进行遍历，递归剩余的字符，将结果添加到列表中，最后去重排序。
+
+
+
+# -*- coding:utf-8 -*-
+class Solution:
+    def Permutation(self, ss):
+        # write code here
+        if not ss:
+            return []
+        
+        if len(ss) == 1:  # 必须将基本情况列出来，否则 for j in [],不会执行它的下一步
+            return [ss]
+        
+        res= []
+        
+        for i in range(len(ss)):
+            for j in self.Permutation(ss[:i] + ss[i+1:]):
+                res.append(ss[i] + j)
+        
+        return sorted(set(res))
